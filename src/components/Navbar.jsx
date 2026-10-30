@@ -3,272 +3,456 @@ import { Globe, Menu, Moon, Sun, X } from 'lucide-react';
 
 const sectionIds = ['about', 'skills', 'projects', 'contact'];
 
-function Controls({ t, theme, lang, toggleTheme, toggleLang, compact = false }) {
-  const themeLabel = theme === 'dark' ? t.a11y.toLight : t.a11y.toDark;
+function Controls(props) {
+  const t = props.t;
+  const theme = props.theme;
+  const lang = props.lang;
+  const toggleTheme = props.toggleTheme;
+  const toggleLang = props.toggleLang;
+  const compact = props.compact || false;
+
+  const themeLabel =
+    theme === 'dark' ? t.a11y.toLight : t.a11y.toDark;
 
   return (
-    <div className={`flex items-center ${compact ? 'gap-3' : 'gap-2.5'}`}>
-      <button
-        type="button"
-        onClick={toggleLang}
-        aria-label={t.a11y.switchLang}
-        className="inline-flex h-[2.55rem] items-center gap-2 rounded-full border border-mocha-deep/15 bg-cream/55 px-3.5 text-[0.68rem] font-bold tracking-wide text-mocha-deep transition-all duration-300 hover:border-terracotta/60 hover:bg-terracotta/10 hover:text-terracotta-deep dark:border-cream/15 dark:bg-white/[0.04] dark:text-cream dark:hover:border-terracotta/55 dark:hover:bg-terracotta/15 dark:hover:text-terracotta-soft"
-      >
-        <Globe className="h-3.5 w-3.5 text-terracotta" aria-hidden="true" />
-        <span className="whitespace-nowrap">{lang === 'en' ? 'العربية' : 'English'}</span>
-      </button>
-
+    <div
+      className={
+        'flex items-center ' +
+        (compact ? 'gap-3' : 'gap-2.5')
+      }
+    >
       <button
         type="button"
         onClick={toggleTheme}
         aria-label={themeLabel}
         title={themeLabel}
-        className="icon-btn"
+        className={
+          'group relative flex items-center justify-center rounded-full border transition-all duration-300 ' +
+          (compact
+            ? 'h-10 w-10'
+            : 'h-11 w-11') +
+          ' border-navy-subtle bg-ivory/20 text-muted hover:-translate-y-0.5 hover:border-navy/20 hover:bg-ivory dark:border-ivory/15 dark:bg-navy-dark/70 dark:text-ivory dark:hover:border-navy/20'
+        }
       >
         {theme === 'dark' ? (
-          <Sun className="h-4 w-4 text-peach" aria-hidden="true" />
+          <Sun
+            size={17}
+            strokeWidth={1.8}
+            aria-hidden="true"
+          />
         ) : (
-          <Moon className="h-4 w-4 text-mocha-brown" aria-hidden="true" />
+          <Moon
+            size={17}
+            strokeWidth={1.8}
+            aria-hidden="true"
+          />
         )}
+      </button>
+
+      <button
+        type="button"
+        onClick={toggleLang}
+        aria-label={lang === 'en' ? 'Switch to Arabic' : 'Switch to English'}
+        title={lang === 'en' ? 'العربية' : 'English'}
+        className={
+          'group relative flex items-center justify-center rounded-full border transition-all duration-300 ' +
+          (compact
+            ? 'h-10 w-10'
+            : 'h-11 w-11') +
+          ' border-navy-subtle bg-ivory/20 text-muted hover:-translate-y-0.5 hover:border-navy/20 hover:bg-ivory dark:border-ivory/15 dark:bg-navy-dark/70 dark:text-ivory dark:hover:border-navy/20'
+        }
+      >
+        <Globe
+          size={17}
+          strokeWidth={1.8}
+          aria-hidden="true"
+        />
       </button>
     </div>
   );
 }
 
-export default function Navbar({ theme, toggleTheme, lang, toggleLang, t }) {
+function Navbar(props) {
+  const theme = props.theme;
+  const toggleTheme = props.toggleTheme;
+  const lang = props.lang;
+  const toggleLang = props.toggleLang;
+  const t = props.t;
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const [scrolled, setScrolled] = useState(false);
+
   const progressRef = useRef(null);
   const menuButtonRef = useRef(null);
-  const menuId = 'mobile-navigation';
+
+  const menuId = 'mobile-navigation-menu';
 
   const navItems = [
-    { id: 'about', href: '#about', label: t.nav.about },
-    { id: 'skills', href: '#skills', label: t.nav.skills },
-    { id: 'projects', href: '#projects', label: t.nav.projects },
-    { id: 'contact', href: '#contact', label: t.nav.contact }
+    {
+      id: 'about',
+      href: '#about',
+      label: t.nav.about,
+    },
+    {
+      id: 'skills',
+      href: '#skills',
+      label: t.nav.skills,
+    },
+    {
+      id: 'projects',
+      href: '#projects',
+      label: t.nav.projects,
+    },
+    {
+      id: 'contact',
+      href: '#contact',
+      label: t.nav.contact,
+    },
   ];
 
-  useEffect(() => {
-    let frame = 0;
+  useEffect(function () {
+    function handleScroll() {
+      const scrollTop =
+        window.scrollY ||
+        document.documentElement.scrollTop ||
+        0;
 
-    const updateScrollState = () => {
-      if (frame) return;
+      setScrolled(scrollTop > 24);
 
-      frame = window.requestAnimationFrame(() => {
-        frame = 0;
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = maxScroll > 0 ? Math.min(scrollTop / maxScroll, 1) : 0;
+      const documentHeight =
+        document.documentElement.scrollHeight -
+        window.innerHeight;
 
-        setScrolled(scrollTop > 24);
-        if (scrollTop < 120) {
-          setActiveSection('');
-        }
+      const progress =
+        documentHeight > 0
+          ? Math.min(
+              1,
+              Math.max(0, scrollTop / documentHeight)
+            )
+          : 0;
 
-        if (progressRef.current) {
-          progressRef.current.style.transform = `scaleX(${progress})`;
-        }
-      });
-    };
+      if (progressRef.current) {
+        progressRef.current.style.transform =
+          'scaleX(' + progress + ')';
+      }
 
-    updateScrollState();
-    window.addEventListener('scroll', updateScrollState, { passive: true });
-    window.addEventListener('resize', updateScrollState);
+      if (scrollTop < 120) {
+        setActiveSection('');
+      }
+    }
 
-    return () => {
-      if (frame) window.cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', updateScrollState);
-      window.removeEventListener('resize', updateScrollState);
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll, {
+      passive: true,
+    });
+
+    window.addEventListener('resize', handleScroll);
+
+    return function () {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
     };
   }, []);
 
-  useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') return undefined;
-
+  useEffect(function () {
     const sections = sectionIds
-      .map((id) => document.getElementById(id))
+      .map(function (id) {
+        return document.getElementById(id);
+      })
       .filter(Boolean);
 
-    if (!sections.length) return undefined;
+    if (!sections.length) {
+      return undefined;
+    }
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      function (entries) {
+        const visibleEntries = entries
+          .filter(function (entry) {
+            return entry.isIntersecting;
+          })
+          .sort(function (a, b) {
+            return b.intersectionRatio - a.intersectionRatio;
+          });
 
-        if (visible[0]) {
-          setActiveSection(visible[0].target.id);
+        if (visibleEntries.length > 0) {
+          setActiveSection(visibleEntries[0].target.id);
         }
       },
-      { rootMargin: '-35% 0px -55% 0px', threshold: [0, 0.2, 0.6] }
+      {
+        root: null,
+        rootMargin: '-25% 0px -55% 0px',
+        threshold: [0.1, 0.25, 0.5, 0.75],
+      }
     );
 
-    sections.forEach((section) => observer.observe(section));
+    sections.forEach(function (section) {
+      observer.observe(section);
+    });
 
-    return () => observer.disconnect();
+    return function () {
+      observer.disconnect();
+    };
   }, []);
 
-  useEffect(() => {
-    if (!mobileMenuOpen) return undefined;
-
-    const onKeyDown = (event) => {
+  useEffect(function () {
+    function handleKeyDown(event) {
       if (event.key === 'Escape') {
         setMobileMenuOpen(false);
-        menuButtonRef.current?.focus();
+
+        if (menuButtonRef.current) {
+          menuButtonRef.current.focus();
+        }
       }
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return function () {
+      document.removeEventListener(
+        'keydown',
+        handleKeyDown
+      );
     };
-
-    document.addEventListener('keydown', onKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', onKeyDown);
-    };
-  }, [mobileMenuOpen]);
-
-  useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth >= 1024) setMobileMenuOpen(false);
-    };
-
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  const handleNavClick = (id) => {
-    setActiveSection(id);
+  useEffect(function () {
+    function handleResize() {
+      if (window.innerWidth >= 1024) {
+        setMobileMenuOpen(false);
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return function () {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  function handleNavClick() {
     setMobileMenuOpen(false);
-  };
+  }
+
+  const headerClass =
+    'fixed inset-x-0 top-0 z-50 transition-all duration-500 ' +
+    (scrolled
+      ? 'px-3 pt-3 sm:px-5'
+      : 'px-0 pt-0');
+
+  const navBackgroundClass =
+    'mx-auto transition-all duration-500 ' +
+    (scrolled
+      ? 'max-w-6xl rounded-xl border border-navy-subtle bg-navy-secondary/80 shadow-sm shadow-navy/5 backdrop-blur-xl dark:border-ivory/10 dark:bg-navy-dark/85'
+      : 'max-w-none border-b border-transparent bg-ivory/20 backdrop-blur-md dark:bg-navy-dark/80');
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      <div
-        className={`relative border-b backdrop-blur-xl transition-all duration-500 ${
-          scrolled
-            ? 'border-mocha-deep/10 bg-cream/90 shadow-[0_18px_40px_-35px_rgba(53,37,34,0.45)] dark:border-cream/10 dark:bg-mocha-dark/90'
-            : 'border-transparent bg-cream/65 dark:bg-mocha-dark/65'
-        }`}
+    <header className={headerClass}>
+      <nav
+        className={navBackgroundClass}
+        aria-label="Primary navigation"
       >
-        <nav aria-label={t.a11y.primaryNav} className="shell">
-          <div
-            className={`flex items-center justify-between gap-4 transition-all duration-500 ${
-              scrolled ? 'h-[4.25rem]' : 'h-[5.15rem]'
-            }`}
+        <div
+          className={
+            'mx-auto flex h-[76px] items-center justify-between px-5 sm:px-7 lg:px-9 ' +
+            (scrolled
+              ? 'lg:h-[70px]'
+              : 'lg:h-[78px]')
+          }
+        >
+          {/* Logo */}
+          <a
+            href="#hero"
+            className="group flex items-center gap-3"
+            aria-label="Noura Lachgar - Home"
+            onClick={handleNavClick}
           >
-            <a
-              href="#hero"
-              onClick={() => {
-                setActiveSection('');
-                setMobileMenuOpen(false);
-              }}
-              className="group flex shrink-0 items-center gap-3 rounded-full"
-              aria-label={t.a11y.home}
+            <span
+              className={
+                'relative flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 ' +
+                'border-navy-subtle bg-navy-deep text-ivory ' +
+                'group-hover:-rotate-3 group-hover:scale-105 ' +
+                'dark:border-ivory/15 dark:bg-navy-deep dark:text-muted'
+              }
             >
-              <span className="relative grid h-10 w-10 place-items-center overflow-hidden rounded-full bg-mocha-deep text-cream shadow-[0_10px_24px_-14px_rgba(53,37,34,0.9)] transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-105 dark:bg-terracotta dark:text-mocha-ink">
-                <span className="font-editorial font-latin-serif text-[1.35rem] leading-none">N</span>
-                <span className="absolute inset-x-2 top-1 h-px bg-cream/20" aria-hidden="true" />
+              <span className="font-serif text-lg font-semibold">
+                N
               </span>
-              <span
-                dir="ltr"
-                className="font-editorial font-latin-serif text-[1.32rem] font-medium tracking-editorial text-mocha-deep dark:text-cream"
-              >
-                Noura
-                <span className="text-terracotta-deep dark:text-terracotta-soft">.</span>
-              </span>
-            </a>
+            </span>
 
-            <div className="hidden items-center rounded-full border border-mocha-deep/10 bg-white/30 p-1 lg:flex dark:border-cream/10 dark:bg-white/[0.025]">
-              {navItems.map((item) => (
+            <span className="hidden sm:block">
+              <span className="block font-serif text-base font-semibold leading-none text-muted dark:text-ivory">
+                Noura Lachgar
+              </span>
+
+              <span className="mt-1 block text-[9px] font-medium uppercase tracking-[0.28em] text-navy/60 dark:text-ivory/55">
+                Portfolio
+              </span>
+            </span>
+          </a>
+
+          {/* Desktop navigation */}
+          <div className="hidden items-center gap-7 lg:flex">
+            {navItems.map(function (item) {
+              const isActive = activeSection === item.id;
+
+              return (
                 <a
                   key={item.id}
                   href={item.href}
-                  onClick={() => handleNavClick(item.id)}
-                  aria-current={activeSection === item.id ? 'location' : undefined}
-                  className="nav-link"
+                  onClick={handleNavClick}
+                  className={
+                    'group relative py-2 text-sm font-medium transition-colors duration-300 ' +
+                    (isActive
+                      ? 'text-navy-deep dark:text-ivory'
+                      : 'text-muted hover:text-navy-deep dark:text-ivory/65 dark:hover:text-ivory')
+                  }
                 >
                   {item.label}
+
+                  <span
+                    className={
+                      'absolute inset-x-0 -bottom-0.5 h-px origin-left border-navy-deep transition-transform duration-300 dark:border-ivory ' +
+                      (isActive
+                        ? 'scale-x-100'
+                        : 'scale-x-0 group-hover:scale-x-100')
+                    }
+                  />
                 </a>
-              ))}
-            </div>
-
-            <div className="hidden lg:flex">
-              <Controls
-                t={t}
-                theme={theme}
-                lang={lang}
-                toggleTheme={toggleTheme}
-                toggleLang={toggleLang}
-              />
-            </div>
-
-            <button
-              ref={menuButtonRef}
-              type="button"
-              onClick={() => setMobileMenuOpen((open) => !open)}
-              aria-expanded={mobileMenuOpen}
-              aria-controls={menuId}
-              aria-label={mobileMenuOpen ? t.a11y.closeMenu : t.a11y.openMenu}
-              className="icon-btn lg:hidden"
-            >
-              {mobileMenuOpen ? (
-                <X className="h-5 w-5" aria-hidden="true" />
-              ) : (
-                <Menu className="h-5 w-5" aria-hidden="true" />
-              )}
-            </button>
+              );
+            })}
           </div>
-        </nav>
 
-        <div className="absolute inset-x-0 bottom-0 h-[2px] bg-mocha-deep/5 dark:bg-cream/5">
-          <span
-            ref={progressRef}
-            aria-hidden="true"
-            className="block h-full w-full bg-gradient-to-r from-terracotta via-mocha-brown to-peach transition-transform duration-150 ease-out dark:from-terracotta dark:via-terracotta-soft dark:to-peach"
-            style={{ transform: 'scaleX(0)', transformOrigin: lang === 'ar' ? 'right' : 'left' }}
-          />
+          {/* Desktop controls */}
+          <div className="hidden lg:block">
+            <Controls
+              t={t}
+              theme={theme}
+              lang={lang}
+              toggleTheme={toggleTheme}
+              toggleLang={toggleLang}
+              compact={true}
+            />
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            ref={menuButtonRef}
+            type="button"
+            onClick={function () {
+              setMobileMenuOpen(function (open) {
+                return !open;
+              });
+            }}
+            aria-expanded={mobileMenuOpen}
+            aria-controls={menuId}
+            aria-label={
+              mobileMenuOpen
+                ? 'Close navigation menu'
+                : 'Open navigation menu'
+            }
+            className={
+              'flex h-11 w-11 items-center justify-center rounded-full border transition-all duration-300 lg:hidden ' +
+              'border-navy-subtle bg-ivory/20 text-muted ' +
+              'hover:border-navy/20 hover:bg-ivory ' +
+              'dark:border-ivory/15 dark:bg-navy-dark/70 dark:text-ivory dark:hover:border-navy/20'
+            }
+          >
+            {mobileMenuOpen ? (
+              <X
+                size={20}
+                strokeWidth={1.8}
+                aria-hidden="true"
+              />
+            ) : (
+              <Menu
+                size={20}
+                strokeWidth={1.8}
+                aria-hidden="true"
+              />
+            )}
+          </button>
         </div>
 
-        {mobileMenuOpen ? (
-          <div id={menuId} className="lg:hidden">
-            <div className="shell pb-5 pt-1">
-              <div className="menu-panel max-h-[calc(100svh-6rem)] overflow-y-auto rounded-[1.75rem] border border-mocha-deep/10 bg-cream/95 p-3 shadow-[0_26px_60px_-30px_rgba(53,37,34,0.5)] backdrop-blur-2xl dark:border-cream/10 dark:bg-mocha-surface/95">
-                <div className="grid gap-0.5">
-                  {navItems.map((item, index) => (
-                    <a
-                      key={item.id}
-                      href={item.href}
-                      onClick={() => handleNavClick(item.id)}
-                      className="group flex items-center justify-between rounded-2xl px-4 py-3 text-[0.98rem] font-semibold text-mocha-deep transition-colors duration-300 hover:bg-terracotta/10 hover:text-terracotta-deep dark:text-cream dark:hover:bg-terracotta/15 dark:hover:text-terracotta-soft"
-                    >
-                      <span>{item.label}</span>
-                      <span
-                        dir="ltr"
-                        className="section-index transition-transform duration-300 group-hover:-translate-y-0.5"
-                        aria-hidden="true"
-                      >
-                        {`0${index + 1}`}
-                      </span>
-                    </a>
-                  ))}
-                </div>
+        {/* Mobile menu */}
+        <div
+          id={menuId}
+          className={
+            'overflow-hidden transition-all duration-300 lg:hidden ' +
+            (mobileMenuOpen
+              ? 'max-h-[500px] opacity-100'
+              : 'pointer-events-none max-h-0 opacity-0')
+          }
+          aria-hidden={!mobileMenuOpen}
+        >
+          <div className="border-t border-navy-subtle px-5 pb-6 pt-4 dark:border-ivory/10">
+            <div className="flex flex-col">
+              {navItems.map(function (item) {
+                const isActive =
+                  activeSection === item.id;
 
-                <div className="mt-3 flex items-center justify-between gap-4 border-t border-mocha-deep/10 px-2 pt-4 dark:border-cream/10">
-                  <Controls
-                    t={t}
-                    theme={theme}
-                    lang={lang}
-                    toggleTheme={toggleTheme}
-                    toggleLang={toggleLang}
-                    compact
-                  />
-                </div>
+                return (
+                  <a
+                    key={item.id}
+                    href={item.href}
+                    onClick={handleNavClick}
+                    tabIndex={mobileMenuOpen ? 0 : -1}
+                    className={
+                      'flex items-center justify-between border-b py-4 text-base font-medium transition-colors duration-300 ' +
+                      'border-navy-subtle dark:border-ivory/10 ' +
+                      (isActive
+                        ? 'text-navy-deep dark:text-ivory'
+                        : 'text-muted hover:text-navy-deep dark:text-ivory/70 dark:hover:text-ivory')
+                    }
+                  >
+                    <span>{item.label}</span>
+
+                    <span
+                      className={
+                        'h-1.5 w-1.5 rounded-full transition-all duration-300 ' +
+                        (isActive
+                          ? 'scale-100 bg-navy-deep dark:bg-ivory'
+                          : 'scale-0 bg-transparent')
+                        }
+                        aria-hidden="true"
+                      />
+                  </a>
+                );
+              })}
+
+              <div className="flex items-center justify-between pt-5">
+                <span className="text-xs font-medium uppercase tracking-[0.2em] text-navy/50 dark:text-ivory/45">
+                  Settings
+                </span>
+
+                <Controls
+                  t={t}
+                  theme={theme}
+                  lang={lang}
+                  toggleTheme={toggleTheme}
+                  toggleLang={toggleLang}
+                  compact={true}
+                />
               </div>
             </div>
           </div>
-        ) : null}
-      </div>
+        </div>
+
+        {/* Reading progress */}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] overflow-hidden"
+          aria-hidden="true"
+        >
+          <div
+            ref={progressRef}
+            className="h-full origin-left scale-x-0 border-navy-deep dark:border-ivory transition-transform duration-150"
+          />
+        </div>
+      </nav>
     </header>
   );
 }
+
+export default Navbar;

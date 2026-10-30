@@ -1,0 +1,147 @@
+/* Projects vertical editorial showcase */
+
+/* Project showcase container */
+.project-showcase {
+  position: relative;
+  height: 550px;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.4s var(--ease-silk);
+}
+
+.project-showcase--left {
+  padding-left: 2rem;
+}
+
+.project-showcase--right {
+  padding-right: 2rem;
+}
+
+/* Project cover image */
+.project-cover {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  border-radius: 0;
+  transition: transform 0.4s var(--ease-silk);
+}
+
+/* Project overlay - darkens downward */
+.project-cover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(7, 17, 31, 0.7) 0%, transparent 70%);
+}
+
+/* Project info - sits on top of image */
+.project-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  padding: 2rem;
+
+  max-width: none;
+
+  z-index: 10;
+
+  color: var(--text-primary);
+
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover .project-info {
+  transform: translateY(-4px);
+}
+
+/* Project tag */
+.project-tag {
+  display: inline-block;
+
+  padding: 0.3rem 0.7rem;
+
+  margin-bottom: 1rem;
+
+  background: rgba(76, 201, 240, 0.15);
+  border-radius: 0;
+
+  font-size: 0.55rem;
+  font-weight: 600;
+
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  color: var(--ac-cyan);
+}
+
+/* Project title */
+.project-title {
+  font-size: clamp(1.8rem, 4.5vw, 2.5rem);
+
+  font-weight: 400;
+
+  letter-spacing: -0.03em;
+
+  margin-bottom: 0.75rem;
+
+  color: var(--text-primary);
+}
+
+/* Project description */
+.project-desc {
+  color: var(--text-secondary);
+
+  font-size: 0.95rem;
+
+  line-height: 1.6;
+
+  margin-bottom: 1.5rem;
+}
+
+/* Project technologies */
+.project-techs .chip {
+  background: rgba(76, 201, 240, 0.1);
+  border: 1px solid rgba(76, 201, 240, 0.2);
+  color: var(--ac-cyan);
+}
+
+/* Hover state */
+.project-showcase.hovered .project-cover {
+  transform: translateY(-8px) scale(1.01);
+
+  transition:
+    transform 0.4s var(--ease-silk);
+}
+
+.project-showcase.hovered .project-info {
+  transform: translateY(-4px);
+
+  transition: transform 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .project-showcase {
+    height: 400px;
+    min-height: auto;
+  }
+  
+  .project-info {
+    padding: 1.25rem;
+  }
+  
+  .project-title {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .project-showcase.hovered .project-cover {
+    transform: none;
+  }
+}

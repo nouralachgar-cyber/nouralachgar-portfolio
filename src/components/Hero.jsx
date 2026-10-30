@@ -1,102 +1,119 @@
 import React from 'react';
-import { ArrowDown, ArrowUpRight, Sparkles } from 'lucide-react';
-import HeroArt from './HeroArt';
+import Hero3D from './Hero3D';
 
 export default function Hero({ t }) {
   return (
     <section
       id="hero"
       aria-labelledby="hero-title"
-      className="relative isolate flex min-h-[100svh] items-center overflow-hidden pb-20 pt-28 sm:pt-32 lg:pb-24 lg:pt-36"
+      className="relative min-h-[100svh] overflow-hidden pt-20 bg-navy-primary"
     >
-      <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
-        <div className="absolute -top-24 end-[-12%] h-[30rem] w-[30rem] rounded-full bg-terracotta/10 blur-3xl dark:bg-terracotta/15" />
-        <div className="absolute bottom-[-8rem] start-[-14%] h-[28rem] w-[28rem] rounded-full bg-peach/35 blur-3xl dark:bg-peach/10" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_35%,rgba(235,197,173,0.2),transparent_38%)] dark:bg-[radial-gradient(circle_at_70%_35%,rgba(199,125,99,0.12),transparent_40%)]" />
+      {/* Grain layer */}
+      <div className="grain-layer fixed inset-0 pointer-events-none" aria-hidden="true" />
+
+      {/* Cyan glow - left side */}
+      <div
+        className="hero-cyan-glow absolute top-0 left-0 w-[300px] h-[300px] -translate-y-1/2 -translate-x-1/2 pointer-events-none opacity-60"
+      />
+
+      {/* Violet glow - right side */}
+      <div
+        className="hero-violet-glow absolute bottom-0 right-0 w-[200px] h-[200px] -translate-y-1/2 -translate-x-1/2 pointer-events-none opacity-50"
+      />
+
+      {/* 3D canvas - subtle background */}
+      <Hero3D className="absolute inset-0 pointer-events-none" />
+
+      {/* Portrait composition - right side */}
+      <div
+        className="hero-portrait-wrapper absolute right-0 top-1/2 -translate-y-1/2 flex items-center justify-center"
+      >
+        <div className="hero-portrait-base relative">
+          <img
+            src="/noura.png"
+            alt={t.hero.portraitAlt}
+            className="hero-portrait-image absolute pointer-events-none"
+          />
+          <div
+            className="hero-portrait-glow-cyan absolute inset-0 pointer-events-none"
+          />
+          <div
+            className="hero-portrait-glow-violet absolute inset-0 pointer-events-none"
+          />
+          {/* Geometric object */}
+          <div
+            className="hero-geo-object absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 border-2 border-navy-subtle rotate-6 opacity-70"
+          />
+          {/* Floating code element */}
+          <div
+            className="hero-code-absolute top-6 left-6 text-cyan/60 text-xs font-mono opacity-80"
+          >
+            <span>function</span>
+            <span>build</span>
+            <span>connect</span>
+          </div>
+        </div>
       </div>
 
-      <div className="shell relative z-10 grid w-full items-center gap-12 lg:grid-cols-[1.03fr_0.97fr] lg:gap-8 xl:gap-14">
-        <div className="max-w-[38rem]">
-          <div
-            className="hero-fade flex items-center gap-3"
-            style={{ '--hero-delay': '120ms' }}
-          >
-            <span className="relative flex h-2 w-2" aria-hidden="true">
-              <span className="absolute inline-flex h-full w-full rounded-full border border-terracotta/40" />
-              <span className="relative m-auto h-1 w-1 rounded-full bg-terracotta" />
-            </span>
-            <span className="section-eyebrow">{t.hero.eyebrow}</span>
-            <span className="h-px w-8 bg-terracotta/45" aria-hidden="true" />
-          </div>
+      {/* Editorial typography composition - left side */}
+      <div className="hero-text-wrapper absolute left-0 top-1/2 -translate-y-1/2 px-4 md:px-6 max-w-xl direction-ltr">
+        <p
+          className="hero-ebrewbury text-champagne mb-4"
+        >
+          {t.hero.eyebrow}
+        </p>
 
-          <h1
-            id="hero-title"
-            aria-label={t.hero.heading}
-            className="hero-title mt-6 sm:mt-7"
-          >
-            {t.hero.headingLines.map((line, lineIndex) => (
-              <span
-                key={line.map((word) => word.text).join(' ')}
-                className="hero-line"
-                aria-hidden="true"
-              >
-                {line.map((word, wordIndex) => (
-                  <span key={`${word.text}-${wordIndex}`} className="hero-word-mask">
-                    <span
-                      className={`hero-word ${word.italic ? 'italic' : ''} ${
-                        word.accent ? 'hero-accent' : ''
-                      }`}
-                      style={{ '--word-index': lineIndex * 3 + wordIndex }}
-                    >
-                      {word.text}
-                    </span>
-                  </span>
-                ))}
-              </span>
-            ))}
-          </h1>
+        <h1
+          id="hero-title"
+          aria-label={t.hero.heading}
+          className="hero-heading font-medium leading-none mb-6 break-normal"
+        >
+          <span className="block">
+            I build the web
+          </span>
+          <span className="block">
+            beyond the screen.
+          </span>
+        </h1>
 
-          <p
-            className="hero-fade body-copy mt-7 max-w-[33rem] text-[1.02rem] sm:text-[1.08rem]"
-            style={{ '--hero-delay': '900ms' }}
-          >
-            {t.hero.subtext}
-          </p>
+        <p
+          className="hero-subtext text-muted/60 mb-8"
+        >
+          {t.hero.subtext}
+        </p>
 
-          <div
-            className="hero-fade mt-9 flex flex-wrap items-center gap-3"
-            style={{ '--hero-delay': '1020ms' }}
-          >
-            <a href="#projects" className="btn btn-primary group">
-              <span>{t.hero.ctaPrimary}</span>
-              <ArrowUpRight className="btn-arrow h-4 w-4" aria-hidden="true" />
-            </a>
-            <a href="#contact" className="btn btn-ghost group">
-              <Sparkles className="h-3.5 w-3.5 text-terracotta" aria-hidden="true" />
-              <span>{t.hero.ctaSecondary}</span>
-            </a>
-          </div>
-
+        {/* CTA BUTTONS */}
+        <div className="hero-cta flex flex-col sm:flex-row gap-3 mb-8">
           <a
-            href="#about"
-            className="hero-fade mt-12 hidden w-fit items-center gap-3 text-[0.6rem] font-bold uppercase tracking-[0.2em] text-mocha-brown/60 transition-colors duration-300 hover:text-terracotta-deep dark:text-peach/50 dark:hover:text-terracotta-soft md:inline-flex"
-            style={{ '--hero-delay': '1180ms' }}
+            href="#projects"
+            className="btn btn-primary"
           >
-            <span
-              className="grid h-8 w-5 place-items-center rounded-full border border-mocha-brown/25 dark:border-peach/25"
-              aria-hidden="true"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-terracotta" />
-            </span>
-            {t.hero.scroll}
-            <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />
+            {t.hero.ctaPrimary}
+          </a>
+          <a
+            href="#contact"
+            className="btn btn-ghost"
+          >
+            {t.hero.ctaSecondary}
           </a>
         </div>
 
-        <div className="relative mx-auto w-full max-w-[35rem] lg:mx-0 lg:ps-2">
-          <HeroArt t={t} />
+        {/* Name and role */}
+        <div className="hero-meta mt-8 flex items-center justify-center gap-2">
+          <span className="text-muted/50 text-[0.65rem] font-semibold tracking-wider">
+            {t.hero.name}
+          </span>
+          <span className="text-muted/40 text-[0.55rem]">
+            {t.hero.role}
+          </span>
         </div>
       </div>
+
+      {/* Scroll indicator */}
+      <div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 w-px h-12 bg-gradient-to-b from-terracotta/30 to-transparent"
+        aria-label="Scroll down"
+      />
     </section>
   );
 }

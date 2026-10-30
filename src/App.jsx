@@ -6,6 +6,7 @@ import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import CustomCursor from './components/CustomCursor';
 import useScrollReveal from './hooks/useScrollReveal';
 import { translations } from './i18n';
 
@@ -89,12 +90,13 @@ export default function App() {
   const toggleLang = () => setLang((current) => (current === 'en' ? 'ar' : 'en'));
 
   return (
-    <div className="relative min-h-screen bg-cream text-mocha-deep transition-colors duration-500 dark:bg-mocha-dark dark:text-cream">
+    <div className="relative min-h-screen bg-navy-primary text-navy-deep transition-colors duration-500 dark:bg-navy-dark dark:text-ivory">
       <a href="#main-content" className="skip-link">
         {t.a11y.skip}
       </a>
 
       <div className="grain" aria-hidden="true" />
+      <CustomCursor />
 
       <Navbar
         theme={theme}
