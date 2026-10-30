@@ -1,125 +1,188 @@
 import React from 'react';
-import './Projects.css';
+import { ArrowUpRight } from 'lucide-react';
+import GithubMark from './GithubMark';
 
-const projects = [
+const PROJECTS = [
   {
     id: 'matchmycv',
     title: 'MatchMyCV',
     category: 'AI & Automation',
     tags: ['React', 'Node.js', 'Express', 'MongoDB', 'Gemini API'],
-    image: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4',
+    image: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=1400&q=80',
     github: 'https://github.com/nouralachgar-cyber/ai-cv-analyzer',
-    demo: '#',
-    variant: 'a'
+    span: 'lg:col-span-7',
   },
   {
     id: 'edufanor',
     title: 'EduFanor',
     category: 'Education',
     tags: ['React', 'Tailwind CSS', 'Vite'],
-    image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514',
-    github: '#',
-    demo: '#',
-    variant: 'b'
+    image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80',
+    github: '',
+    span: 'lg:col-span-5',
   },
   {
     id: 'nebras',
     title: 'Nebras Coffee',
     category: 'Hospitality',
     tags: ['JavaScript', 'HTML5', 'CSS3'],
-    image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb',
-    github: '#',
-    demo: '#',
-    variant: 'c'
+    image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1200&q=80',
+    github: '',
+    span: 'lg:col-span-5',
   },
   {
     id: 'bloom',
     title: 'BLOOM (Igeddigen)',
     category: 'E-commerce',
     tags: ['React', 'Tailwind CSS'],
-    image: 'https://images.unsplash.com/photo-1563241527-3004b7be0ffd',
-    github: '#',
-    demo: '#',
-    variant: 'd'
-  }
+    image: 'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=1400&q=80',
+    github: '',
+    span: 'lg:col-span-7',
+  },
 ];
+
+function ProjectCard({ project, index, t }) {
+  const href = project.github || 'https://github.com/nouralachgar-cyber';
+  const isExternal = Boolean(project.github);
+
+  return (
+    <article
+      className='project-card reveal-init h-full'
+      data-reveal
+      data-index={index}
+      style={{ '--reveal-delay': index * 120 + 120 + 'ms' }}
+    >
+      <div className='project-media'>
+        <img
+          src={project.image}
+          alt={`${project.title} — ${t.projects.previewAlt}`}
+          loading='lazy'
+          decoding='async'
+        />
+        <div className='project-overlay' aria-hidden='true' />
+
+        {/* Floating index + category on media */}
+        <span
+          aria-hidden='true'
+          className='absolute left-4 top-4 z-[2] rounded-md border border-ivory/25 bg-navy-primary/70 px-2 py-1 font-mono text-[0.65rem] font-semibold tracking-[0.14em] text-ivory/90 backdrop-blur-sm'
+          dir='ltr'
+        >
+          0{index + 1}
+        </span>
+        <span className='absolute bottom-4 left-4 z-[2] inline-flex items-center gap-2 rounded-full border border-cyan/40 bg-navy-primary/60 px-3 py-1.5 text-[0.58rem] font-bold uppercase tracking-[0.18em] text-cyan backdrop-blur-sm'>
+          {project.category}
+        </span>
+
+        {/* Hover accent glow */}
+        <div
+          aria-hidden='true'
+          className='pointer-events-none absolute inset-0 z-[1] opacity-0 transition-opacity duration-700 group-hover:opacity-100'
+          style={{
+            boxShadow: 'inset 0 0 0 1px rgb(var(--accent-cyan-rgb) / 0.28), inset 0 -80px 120px -90px rgb(var(--accent-champagne-rgb) / 0.35)',
+          }}
+        />
+      </div>
+
+      <div className='flex flex-1 flex-col p-6 lg:p-7'>
+        <h3 className='font-editorial text-[1.5rem] leading-tight text-ink lg:text-[1.7rem]'>
+          {project.title}
+        </h3>
+        <p className='mt-2.5 text-[0.9rem] leading-relaxed text-muted'>
+          {t.projects.descriptions[project.id]}
+        </p>
+
+        <div className='project-tags mt-5 lg:mt-6'>
+          {project.tags.map((tag) => (
+            <span key={tag} className='project-tech'>
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        {/* Visible action row (spans are decorative; the real link covers the card) */}
+        <div className='mt-6 flex items-center gap-4 pt-1'>
+          <span className='inline-flex items-center gap-2 text-[0.66rem] font-bold uppercase tracking-[0.16em] text-ink transition-colors duration-300 group-hover:text-cyan'>
+            {isExternal ? t.projects.viewGithub : t.projects.demo}
+            <ArrowUpRight
+              className='h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5'
+              strokeWidth={1.8}
+              aria-hidden='true'
+            />
+          </span>
+          <span className='h-px flex-1 bg-ink/10 dark:bg-ivory/10' aria-hidden='true' />
+          <GithubMark className='h-4 w-4 text-muted transition-colors duration-300 group-hover:text-cyan' aria-hidden='true' />
+        </div>
+      </div>
+
+      {/* Full-card stretched link (single focus target) */}
+      <a
+        href={href}
+        target='_blank'
+        rel='noreferrer'
+        aria-label={`${project.title} — ${isExternal ? t.projects.viewGithub : t.projects.viewDemo}`}
+        className='absolute inset-0 z-[5] rounded-[1.2rem]'
+      />
+    </article>
+  );
+}
 
 export default function Projects({ t }) {
   return (
     <section
-      id="projects"
-      aria-labelledby="projects-title"
-      className="projects-section section-pad section-alt relative overflow-hidden"
+      id='projects'
+      aria-labelledby='projects-title'
+      className='section-alt section-pad relative overflow-hidden'
     >
-      <header className="projects-head">
-        <div className="projects-eyebrow-row">
-          <span className="section-index" aria-hidden="true" dir="ltr">
-            {t.projects.index}
-          </span>
-          <span className="projects-eyebrow-dot" aria-hidden="true" />
-          <span className="section-eyebrow">{t.projects.eyebrow}</span>
-          <span className="hairline" aria-hidden="true" />
-          <svg className="projects-eyebrow-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-          </svg>
+      {/* Ambient geometry */}
+      <div
+        aria-hidden='true'
+        className='pointer-events-none absolute -top-24 right-0 hidden rotate-12 text-champagne/[0.12] lg:block'
+      >
+        <svg viewBox='0 0 200 200' width='260' height='260' fill='none' focusable='false'>
+          <rect x='40' y='40' width='120' height='120' stroke='currentColor' strokeWidth='1' />
+          <rect x='40' y='40' width='120' height='120' stroke='currentColor' strokeWidth='1' transform='rotate(45 100 100)' />
+        </svg>
+      </div>
+
+      <div className='shell relative'>
+        <div className='flex items-center gap-4' data-reveal style={{ '--reveal-delay': '40ms' }}>
+          <span className='section-index' dir='ltr'>{t.projects.index}</span>
+          <span className='section-eyebrow'>{t.projects.eyebrow}</span>
+          <span className='hairline' aria-hidden='true' data-reveal='line' style={{ '--reveal-delay': '240ms' }} />
         </div>
 
-        <h2 id="projects-title" className="section-title projects-title">
-          <span className="projects-title-line">
-            <span className="projects-title-inner">{t.projects.heading}</span>
-          </span>
-          <span className="projects-title-line projects-title-line--accent">
-            <span className="projects-title-inner">
-              <em className="projects-title-accent">{t.projects.headingAccent}</em>
-            </span>
-          </span>
+        <h2 id='projects-title' className='section-title mt-5' data-reveal='mask' style={{ '--reveal-delay': '100ms' }}>
+          {t.projects.heading}{' '}
+          <em className='accent-italic'>{t.projects.headingAccent}</em>
         </h2>
 
-        <p className="body-copy projects-intro">{t.projects.subtext}</p>
-      </header>
+        <p className='body-copy mt-5 max-w-xl' data-reveal style={{ '--reveal-delay': '200ms' }}>
+          {t.projects.subtext}
+        </p>
 
-      <div className="projects-gallery">
-        <div className="projects-wall-nav" role="group" aria-label={t.projects.indexNav}>
-          {projects.map((project, index) => (
-            <div
-              key={project.id}
-              className="project-card reveal-init"
-              data-index={index}
-              data-reveal
-              style={{ '--reveal-delay': `${index * 120 + 200}ms` }}
-            >
-              {/* Large project image */}
-              <div className="project-image" style={{
-                backgroundImage: `url('${project.image}')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}>
-                <div className="project-overlay" />
-              </div>
-
-              {/* Project info - reveals on hover */}
-              <div className="project-info">
-                <span className="project-tag">{project.tags[0]}</span>
-                <h3 className="project-title">{project.title}</h3>
-                <p className="project-desc">{t.projects.descriptions[project.id]}</p>
-                <div className="project-technologies">
-                  {project.tags.map((tag) => (
-                    <span key={tag} className="project-tech inline-block px-2.5 py-0.5 rounded text-[0.55rem] font-medium transition-colors duration-300 hover:bg-cyan/10 hover:text-cyan dark:hover:bg-navy-deep/30 dark:hover:text-cyan">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="project-link btn btn-primary mt-4"
-                >
-                  VIEW PROJECT
-                </a>
-              </div>
+        <div
+          className='mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-12 lg:gap-7 lg:pt-4'
+          data-reveal
+          aria-label={t.projects.galleryLabel}
+        >
+          {PROJECTS.map((project, index) => (
+            <div key={project.id} className={'group ' + project.span}>
+              <ProjectCard project={project} index={index} t={t} />
             </div>
           ))}
+        </div>
+
+        <div className='mt-12 flex flex-wrap items-center justify-between gap-4' data-reveal style={{ '--reveal-delay': '200ms' }}>
+          <p className='caption-small'>{t.projects.projectLabel} — 04</p>
+          <a
+            href='https://github.com/nouralachgar-cyber'
+            target='_blank'
+            rel='noreferrer'
+            className='group inline-flex items-center gap-3 rounded-full border border-ink/12 px-5 py-2.5 text-[0.66rem] font-bold uppercase tracking-[0.16em] text-ink transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan/60 hover:text-cyan dark:border-ivory/15'
+          >
+            {t.projects.more}
+            <GithubMark className='h-3.5 w-3.5' aria-hidden='true' />
+          </a>
         </div>
       </div>
     </section>

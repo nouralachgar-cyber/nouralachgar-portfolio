@@ -50,7 +50,7 @@ export default function App() {
 
     const themeMeta = document.querySelector('meta[name="theme-color"]');
     if (themeMeta) {
-      themeMeta.setAttribute('content', theme === 'dark' ? '#2A1D1A' : '#FAF3EA');
+      themeMeta.setAttribute('content', theme === 'dark' ? '#07111F' : '#F5EBDD');
     }
 
     try {
@@ -90,7 +90,8 @@ export default function App() {
   const toggleLang = () => setLang((current) => (current === 'en' ? 'ar' : 'en'));
 
   return (
-    <div className="relative min-h-screen bg-navy-primary text-navy-deep transition-colors duration-500 dark:bg-navy-dark dark:text-ivory">
+    <div className="bg-base relative min-h-screen transition-colors duration-500">
+      <div className="relative z-[1]">
       <a href="#main-content" className="skip-link">
         {t.a11y.skip}
       </a>
@@ -101,7 +102,6 @@ export default function App() {
       <Navbar
         theme={theme}
         toggleTheme={toggleTheme}
-        lang={lang}
         toggleLang={toggleLang}
         t={t}
       />
@@ -115,6 +115,7 @@ export default function App() {
       </main>
 
       <Footer t={t} />
+      </div>
     </div>
   );
 }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Mail, Send } from 'lucide-react';
-import SectionHeading from './SectionHeading';
+import { Mail, Send, Sparkles } from 'lucide-react';
 
 const CONTACT_EMAIL = 'nlachgar12@gmail.com';
+const GITHUB_URL = 'https://github.com/nouralachgar-cyber';
 
 export default function Contact({ t }) {
   const [values, setValues] = useState({ name: '', email: '', message: '' });
@@ -11,10 +11,10 @@ export default function Contact({ t }) {
 
   const handleChange = (field) => (event) => {
     const { value } = event.target;
-    setValues({ ...values, [field]: value });
+    setValues((current) => ({ ...current, [field]: value }));
 
     if (errors[field]) {
-      setErrors({ ...errors, [field]: undefined });
+      setErrors((current) => ({ ...current, [field]: undefined }));
     }
 
     if (status !== 'idle') {
@@ -57,143 +57,187 @@ export default function Contact({ t }) {
     setStatus('success');
   };
 
+  const errorText = (field) =>
+    errors[field] && (
+      <p className='mt-1.5 text-[0.7rem] font-medium text-terracotta' role='alert'>
+        {errors[field]}
+      </p>
+    );
+
   return (
     <section
-      id="contact"
-      aria-labelledby="contact-title"
-      className="contact-section section-pad relative overflow-hidden"
+      id='contact'
+      aria-labelledby='contact-title'
+      className='section-pad relative overflow-hidden'
     >
-      {/* Contact accent glow */}
+      {/* Dramatic closing atmosphere */}
       <div
-        className="contact-glow absolute bottom-0 right-0 w-[400px] h-[400px] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+        aria-hidden='true'
+        className='pointer-events-none absolute inset-0'
+        style={{
+          background:
+            'radial-gradient(ellipse 60% 50% at 80% 100%, var(--glow-violet), transparent 70%), radial-gradient(ellipse 55% 45% at 10% 90%, var(--glow-cyan), transparent 70%)',
+        }}
       />
 
-      <div className="shell">
-        <SectionHeading
-          id="contact-title"
-          index={t.contact.index}
-          eyebrow={t.contact.eyebrow}
-          heading={t.contact.heading}
-          accent={t.contact.headingAccent}
-          description={t.contact.subtext}
-        />
-
-        {/* CTA large statement */}
-        <div className="mt-16 lg:mt-20 max-w-2xl mx-auto text-center reveal-init" data-reveal style={{ '--reveal-delay': '200ms' }}>
-          <p className="cta-large font-editorial leading-tight mb-6">
-            Let's build something memorable.
-          </p>
-          <p className="cta-subtext text-muted/60 max-w-2xl mx-auto">
-            {t.contact.subtext}
-          </p>
-        </div>
-
-        {/* Contact methods */}
-        <div className="mt-16 lg:mt-24 grid gap-6 lg:grid-cols-2">
-          {/* Email */}
+      <div className='shell relative'>
+        <div className='grid grid-cols-1 gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16'>
+          {/* Left — headline + direct actions */}
           <div>
-            <a
-              href={`mailto:${CONTACT_EMAIL}`}
-              className="contact-method group inline-flex items-center gap-3 rounded-full border border-terracotta/25 bg-terracotta/10 px-4 py-3 text-[0.75rem] font-bold uppercase tracking-wider text-terracotta-deep transition-colors duration-300 hover:text-terracotta-deep dark:border-navy-subtle dark:bg-navy-deep/10 dark:hover:border-terracotta/30 dark:hover:text-terracotta-soft"
-            >
-              <Mail className="h-4 w-4 text-terracotta" aria-hidden="true" />
-              <span>Email me</span>
-            </a>
-          </div>
+            <div className='flex items-center gap-4' data-reveal style={{ '--reveal-delay': '40ms' }}>
+              <span className='section-index' dir='ltr'>{t.contact.index}</span>
+              <span className='section-eyebrow'>{t.contact.eyebrow}</span>
+              <span className='hairline' aria-hidden='true' data-reveal='line' style={{ '--reveal-delay': '240ms' }} />
+            </div>
 
-          {/* GitHub */}
-          <div className="mt-6">
-            <a
-              href="https://github.com/nouralachgar-cyber"
-              target="_blank"
-              rel="noreferrer"
-              className="contact-method group inline-flex items-center gap-2.5 rounded-full border border-navy-subtle/12 bg-navy-deep/15 px-4 py-2.5 text-[0.7rem] font-bold text-muted transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan/45 hover:text-cyan dark:border-ivory/10 dark:bg-white/[0.025] dark:text-ivory dark:hover:border-cyan/45 dark:hover:text-cyan"
+            <h2 id='contact-title' className='section-title mt-5' data-reveal='mask' style={{ '--reveal-delay': '100ms' }}>
+              {t.contact.heading}{' '}
+              <em className='accent-italic'>{t.contact.headingAccent}</em>
+            </h2>
+
+            <p
+              className='mt-16 font-editorial text-[clamp(1.35rem,2.6vw,1.9rem)] italic leading-snug text-ink/85'
+              data-reveal
+              style={{ '--reveal-delay': '200ms' }}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                aria-hidden="true"
-                focusable="false"
-                fill="currentColor"
-                viewBox="0 0 16 16"
+              “{t.hero.signal}”
+            </p>
+
+            <p className='body-copy mt-5 max-w-md' data-reveal style={{ '--reveal-delay': '260ms' }}>
+              {t.contact.direct}{' '}
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                aria-label={t.a11y.email}
+                className='font-semibold text-cyan underline decoration-cyan/30 underline-offset-4 transition-colors duration-300 hover:decoration-cyan/80'
               >
-                <circle cx="8" cy="8" r="5.5" />
-              </svg>
-              GitHub
-            </a>
-          </div>
-        </div>
+                {CONTACT_EMAIL}
+              </a>
+            </p>
 
-        {/* CTA card */}
-        <div className="mt-16 lg:mt-24 surface-card p-6 lg:p-8 reveal-init" data-reveal style={{ '--reveal-delay': '360ms' }}>
-          <h3 className="font-editorial text-[1.5rem] text-navy-deep dark:text-ivory mb-4">
-            {t.contact.formTitle}
-          </h3>
-          <p className="text-muted/50 text-sm dark:text-muted/40 mb-6">
-            {t.contact.formNote}
-          </p>
-
-          <form
-            onSubmit={handleSubmit}
-            noValidate
-            className="space-y-4"
-          >
-            <div>
-              <label htmlFor="contact-name" className="text-[0.65rem] font-medium uppercase tracking-wider text-muted/50 mb-2 block">
-                {t.contact.name}
-              </label>
-              <input
-                id="contact-name"
-                name="name"
-                type="text"
-                required
-                value={values.name}
-                onChange={handleChange('name')}
-                placeholder={t.contact.namePlaceholder}
-                className="w-full bg-navy-deep/20 border border-terracotta/20 rounded-none rounded-[0.5rem] px-4 py-3 text-[0.9rem] placeholder-terracotta/40 transition-colors duration-300 focus:border-cyan/45 focus:outline-none dark:bg-navy-deep/5 dark:border-terracotta/30 dark:placeholder-terracotta/30"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="contact-email" className="text-[0.65rem] font-medium uppercase tracking-wider text-muted/50 mb-2 block">
-                {t.contact.email}
-              </label>
-              <input
-                id="contact-email"
-                name="email"
-                type="email"
-                required
-                value={values.email}
-                onChange={handleChange('email')}
-                placeholder={t.contact.emailPlaceholder}
-                className="w-full bg-navy-deep/20 border border-terracotta/20 rounded-none rounded-[0.5rem] px-4 py-3 text-[0.9rem] placeholder-terracotta/40 transition-colors duration-300 focus:border-cyan/45 focus:outline-none dark:bg-navy-deep/5 dark:border-terracotta/30 dark:placeholder-terracotta/30"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="contact-message" className="text-[0.65rem] font-medium uppercase tracking-wider text-muted/50 mb-2 block">
-                {t.contact.message}
-              </label>
-              <textarea
-                id="contact-message"
-                name="message"
-                rows={5}
-                required
-                value={values.message}
-                onChange={handleChange('message')}
-                placeholder={t.contact.messagePlaceholder}
-                className="w-full bg-navy-deep/20 border border-terracotta/20 rounded-none rounded-[0.5rem] px-4 py-3 text-[0.9rem] placeholder-terracotta/40 resize-y transition-colors duration-300 focus:border-cyan/45 focus:outline-none dark:bg-navy-deep/5 dark:border-terracotta/30 dark:placeholder-terracotta/30"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="btn btn-primary w-full"
+            {/* Availability + socials */}
+            <div
+              className='mt-9 flex flex-wrap items-center gap-3'
+              data-reveal
+              style={{ '--reveal-delay': '340ms' }}
             >
-              <Send className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
-              <span>{t.contact.send}</span>
-            </button>
-          </form>
+              <span className='inline-flex items-center gap-2.5 rounded-full border border-cyan/35 bg-cyan/[0.06] px-4 py-2 text-[0.63rem] font-bold uppercase tracking-[0.14em] text-cyan'>
+                <span className='hero-eyebrow-dot' aria-hidden='true' />
+                {t.contact.availability}
+              </span>
+
+              <a
+                href={GITHUB_URL}
+                target='_blank'
+                rel='noreferrer'
+                aria-label={t.a11y.viewGithub}
+                className='inline-flex items-center gap-2 rounded-full border border-ink/12 px-4 py-2 text-[0.63rem] font-bold uppercase tracking-[0.14em] text-muted transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan/50 hover:text-cyan dark:border-ivory/15'
+              >
+                GitHub
+              </a>
+
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                aria-label={t.a11y.email}
+                className='inline-flex items-center gap-2 rounded-full border border-ink/12 px-4 py-2 text-[0.63rem] font-bold uppercase tracking-[0.14em] text-muted transition-all duration-300 hover:-translate-y-0.5 hover:border-violet/50 hover:text-violet dark:border-ivory/15'
+              >
+                <Mail className='h-3.5 w-3.5' strokeWidth={1.8} aria-hidden='true' />
+                {t.contact.emailLabel}
+              </a>
+            </div>
+          </div>
+
+          {/* Right — form card */}
+          <div className='surface-card relative p-6 sm:p-8 lg:p-9' data-reveal style={{ '--reveal-delay': '220ms' }}>
+            <div className='mb-6 flex items-center justify-between gap-4'>
+              <h3 className='font-editorial text-[1.4rem] text-ink'>
+                {t.contact.formTitle}
+              </h3>
+              <Sparkles className='h-4 w-4 shrink-0 text-violet' strokeWidth={1.7} aria-hidden='true' />
+            </div>
+
+            <p className='mb-7 text-[0.78rem] leading-relaxed text-muted'>
+              {t.contact.formNote}
+            </p>
+
+            <form onSubmit={handleSubmit} noValidate className='space-y-5'>
+              <div>
+                <label
+                  htmlFor='contact-name'
+                  className='mb-2 block text-[0.62rem] font-bold uppercase tracking-[0.16em] text-muted'
+                >
+                  {t.contact.name}
+                </label>
+                <input
+                  id='contact-name'
+                  name='name'
+                  type='text'
+                  required
+                  autoComplete='name'
+                  value={values.name}
+                  onChange={handleChange('name')}
+                  placeholder={t.contact.namePlaceholder}
+                  aria-invalid={Boolean(errors.name)}
+                  className='contact-input'
+                />
+                {errorText('name')}
+              </div>
+
+              <div>
+                <label
+                  htmlFor='contact-email'
+                  className='mb-2 block text-[0.62rem] font-bold uppercase tracking-[0.16em] text-muted'
+                >
+                  {t.contact.email}
+                </label>
+                <input
+                  id='contact-email'
+                  name='email'
+                  type='email'
+                  required
+                  autoComplete='email'
+                  value={values.email}
+                  onChange={handleChange('email')}
+                  placeholder={t.contact.emailPlaceholder}
+                  aria-invalid={Boolean(errors.email)}
+                  className='contact-input'
+                />
+                {errorText('email')}
+              </div>
+
+              <div>
+                <label
+                  htmlFor='contact-message'
+                  className='mb-2 block text-[0.62rem] font-bold uppercase tracking-[0.16em] text-muted'
+                >
+                  {t.contact.message}
+                </label>
+                <textarea
+                  id='contact-message'
+                  name='message'
+                  rows={5}
+                  required
+                  value={values.message}
+                  onChange={handleChange('message')}
+                  placeholder={t.contact.messagePlaceholder}
+                  aria-invalid={Boolean(errors.message)}
+                  className='contact-input min-h-[120px] resize-y'
+                />
+                {errorText('message')}
+              </div>
+
+              <button type='submit' className='btn btn-primary mt-2 w-full'>
+                <Send className='h-4 w-4' strokeWidth={1.8} aria-hidden='true' />
+                {status === 'success' ? t.contact.sending : t.contact.send}
+              </button>
+
+              {status === 'success' && (
+                <p className='rounded-lg border border-cyan/30 bg-cyan/[0.07] px-4 py-3 text-[0.75rem] leading-relaxed text-cyan' role='status'>
+                  {t.contact.success} {t.contact.successHint}{' '}
+                  <span dir='ltr'>{CONTACT_EMAIL}</span>
+                </p>
+              )}
+            </form>
+          </div>
         </div>
       </div>
     </section>

@@ -1,80 +1,97 @@
-"use client";
+import React, { useEffect, useRef } from 'react';
 
-import { useEffect, useState, useRef } from 'react';
-
+/**
+ * Decorative dual cursor: an instant cyan dot and a lagging ring that
+ * expands over interactive elements. The native cursor remains available;
+ * both layers are hidden on coarse pointers via CSS.
+ */
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [expanded, setExpanded] = useState(false);
   const dotRef = useRef(null);
-  const linkRef = useRef(null);
+  const ringRef = useRef(null);
 
-  // Initialize cursor elements
   useEffect(() => {
-    const dot = document.createElement('div');
-    const outline = document.createElement('div');
-    
-    dot.className = 'cursor-dot';
-    outline.className = 'cursor-dot-outline';
-    
-    document.body.appendChild(dot);
-    document.body.appendChild(outline);
-    
-    dotRef.current = dot;
-    linkRef.current = outline;
-
-    let timeout = 0;
-    
-    const updatePosition = (e) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-    };
-
-    const handleEnter = () => {
-      setExpanded(true);
-      clearTimeout(timeout);
-    };
-
-    const handleLeave = () => {
-      setExpanded(false);
-      timeout = setTimeout(() => {
-        setExpanded(false);
-      }, 100);
-    };
-
-    // Hide on touch devices
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 1;
-    if (isTouchDevice) {
-      dot.style.display = 'none';
-      outline.style.display = 'none';
-      return;
+    if (
+      typeof window.matchMedia !== 'function' ||
+      window.matchMedia('(pointer: coarse)').matches
+    ) {
+      return undefined;
     }
 
-    const onMouseMove = (e) => {
-      updatePosition(e);
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return undefined;
+
+    let position = { x: -100, y: -100 };
+    let ringPosition = { x: -100, y: -100 };
+    let frame = 0;
+    let visible = false;
+
+    const render = () => {
+      dot.style.transform = `translate3d(${position.x}px, ${position.y}px, 0) translate(-50%, -50%)`;
+      ring.style.transform = `translate3d(${ringPosition.x}px, ${ringPosition.y}px, 0) translate(-50%, -50%)`;
     };
 
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseenter', handleEnter);
-    window.addEventListener('mouseleave', handleLeave);
+    const tick = () => {
+      ringPosition = {
+        x: ringPosition.x + (position.x - ringPosition.x) * 0.18,
+        y: ringPosition.y + (position.y - ringPosition.y) * 0.18,
+      };
+      render();
+      frame = window.requestAnimationFrame(tick);
+    };
+
+    const onMouseMove = (event) => {
+      position = { x: event.clientX, y: event.clientY };
+
+      if (!visible) {
+        visible = true;
+        dot.style.opacity = '1';
+        ring.style.opacity = '1';
+        ringPosition = { ...position };
+        frame = window.requestAnimationFrame(tick);
+      }
+    };
+
+    const onOver = (event) => {
+      const target = event.target;
+      const interactive =
+        target instanceof Element &&
+        target.closest('a, button, [role="button"], input, textarea, select, label');
+
+      ring.classList.toggle('is-active', Boolean(interactive));
+    };
+
+    const onMouseLeave = () => {
+      visible = false;
+      dot.style.opacity = '0';
+      ring.style.opacity = '0';
+    };
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    document.addEventListener('mouseover', onOver, { passive: true });
+    document.documentElement.addEventListener('mouseleave', onMouseLeave);
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseenter', handleEnter);
-      window.removeEventListener('mouseleave', handleLeave);
-      document.body.removeChild(dot);
-      document.body.removeChild(outline);
+      document.removeEventListener('mouseover', onOver);
+      document.documentElement.removeEventListener('mouseleave', onMouseLeave);
+      if (frame) window.cancelAnimationFrame(frame);
     };
   }, []);
 
   return (
     <>
       <div
-        style={{
-          left: position.x,
-          top: position.y,
-          ...(expanded ? { width: '24px', height: '24px', borderWidth: '1px' } : { width: '8px', height: '8px' }),
-          opacity: expanded ? 0.6 : 1,
-        }}
-        className="cursor-dot-outline"
+        ref={dotRef}
+        className='cursor-dot'
+        style={{ opacity: 0 }}
+        aria-hidden='true'
+      />
+      <div
+        ref={ringRef}
+        className='cursor-ring'
+        style={{ opacity: 0, transitionProperty: 'width, height, border-color, background-color, opacity' }}
+        aria-hidden='true'
       />
     </>
   );

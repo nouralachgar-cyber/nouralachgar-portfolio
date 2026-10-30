@@ -1,24 +1,32 @@
 import React from 'react';
-import { Code, Palette, Globe, UserCheck } from 'lucide-react';
+import { Compass, Layers, MapPin, Terminal } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 
 export default function About({ t }) {
+  const qualityEntries = Object.entries(t.about.qualities);
+
+  const metaCards = [
+    { icon: MapPin, label: t.about.meta.basedInLabel, value: t.about.meta.basedIn, accent: 'text-terracotta' },
+    { icon: Layers, label: t.about.meta.focusLabel, value: t.about.meta.focus, accent: 'text-cyan' },
+    { icon: Terminal, label: t.about.meta.stackLabel, value: t.about.meta.stack, accent: 'text-violet' },
+    { icon: Compass, label: t.about.meta.approachLabel, value: t.about.meta.approach, accent: 'text-champagne' },
+  ];
+
   return (
     <section
-      id="about"
-      aria-labelledby="about-title"
-      className="section-pad relative overflow-hidden"
+      id='about'
+      aria-labelledby='about-title'
+      className='section-pad relative overflow-hidden'
     >
-      {/* Abstract terracotta accent bar */}
+      {/* Vertical architectural accent */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-0.5 bg-terracotta/10"
-        style={{ background: 'rgba(201, 130, 98, 0.08)' }}
-        aria-hidden="true"
+        aria-hidden='true'
+        className='absolute inset-y-0 left-6 hidden w-px bg-gradient-to-b from-terracotta/0 via-terracotta/25 to-terracotta/0 lg:block'
       />
 
-      <div className="shell relative">
+      <div className='shell relative'>
         <SectionHeading
-          id="about-title"
+          id='about-title'
           index={t.about.index}
           eyebrow={t.about.eyebrow}
           heading={t.about.heading}
@@ -26,51 +34,82 @@ export default function About({ t }) {
           description={t.about.text}
         />
 
-        {/* Editorial statement - large central text */}
-        <div className="mt-16 lg:mt-20 max-w-2xl mx-auto text-center reveal-init" data-reveal>
-          <p
-            className="about-statement font-editorial leading-relaxed mb-6"
-          >
-            I don't just build interfaces. I create digital experiences.
-          </p>
-          <p
-            className="text-[1.05rem] md:text-[1.1rem] lg:text-[1.2rem] text-terracotta/40 max-w-2xl mx-auto"
-          >
-            {t.about.text}
-          </p>
+        {/* Editorial statement */}
+        <div
+          className='mt-16 max-w-3xl lg:mt-20'
+          data-reveal
+          style={{ '--reveal-delay': '120ms' }}
+        >
+          <span aria-hidden='true' className='block font-editorial text-5xl leading-none text-terracotta/50'>
+            “
+          </span>
+          <p className='about-statement -mt-2'>{t.about.quote}</p>
         </div>
 
-        {/* Qualities / focus areas - asymmetric grid */}
-        <div className="mt-16 lg:mt-24 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            { icon: Code, title: t.about.qualities.curious },
-            { icon: Palette, title: t.about.qualities.detail },
-            { icon: Globe, title: t.about.qualities.learning },
-            { icon: UserCheck, title: t.about.qualities.ux }
-          ].map((item, _index) => (
+        {/* Signature */}
+        <div
+          className='mt-10 flex items-center gap-4'
+          data-reveal
+          style={{ '--reveal-delay': '220ms' }}
+        >
+          <span className='h-px w-10 bg-terracotta/50' aria-hidden='true' />
+          <span className='font-editorial text-xl italic text-ink'>
+            {t.about.signature}
+          </span>
+          <span className='text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-muted'>
+            {t.about.signatureRole}
+          </span>
+        </div>
+
+        {/* Metadata cards */}
+        <div className='mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:mt-16'>
+          {metaCards.map((card, index) => (
             <article
-              key={item.title}
-              className="group rounded-xl border transition-all duration-300 hover:border-terracotta/20 hover:bg-navy-secondary/50 dark:border-terracotta/30 dark:hover:border-terracotta/40 dark:hover:bg-navy-deep/20 p-5"
+              key={card.label}
+              className='about-card group'
+              data-reveal
+              style={{ '--reveal-delay': 120 + index * 90 + 'ms' }}
             >
-              <div className="flex items-center gap-3 mb-3">
+              <div className='mb-4 flex items-center justify-between'>
+                <card.icon
+                  className={card.accent + ' h-[18px] w-[18px]'}
+                  strokeWidth={1.7}
+                  aria-hidden='true'
+                />
                 <span
-                  className="h-5 w-5 rounded-full bg-terracotta/10 flex items-center justify-center"
-                  style={{
-                    background: 'rgba(201, 130, 98, 0.1)',
-                  }}
+                  aria-hidden='true'
+                  className='text-[0.55rem] font-bold tabular-nums tracking-[0.2em] text-ink/25 dark:text-ivory/20'
                 >
-                  <item.icon className="h-3 w-3 text-terracotta" />
-                </span>
-                <span className="text-[0.7rem] font-semibold text-navy-deep dark:text-ivory">
-                  {item.title}
+                  0{index + 1}
                 </span>
               </div>
-              <p className="text-[0.8rem] leading-relaxed text-terracotta/50 dark:text-muted">
-                {item.description || 'Focused on creating meaningful digital experiences.'}
+              <p className='text-[0.6rem] font-bold uppercase tracking-[0.22em] text-muted'>
+                {card.label}
+              </p>
+              <p className='mt-2 text-[0.95rem] font-medium leading-snug text-ink'>
+                {card.value}
               </p>
             </article>
           ))}
         </div>
+
+        {/* Qualities — preserved translated content as tag row */}
+        <ul
+          className='mt-10 flex flex-wrap items-center gap-2.5'
+          data-reveal
+          style={{ '--reveal-delay': '320ms' }}
+          aria-label={t.about.eyebrow}
+        >
+          {qualityEntries.map(([key, label]) => (
+            <li
+              key={key}
+              className='inline-flex items-center gap-2.5 rounded-full border border-ink/10 bg-paper/50 px-4 py-2 text-[0.7rem] font-medium text-muted transition-colors duration-300 hover:border-champagne/50 hover:text-ink dark:border-ivory/10'
+            >
+              <span className='h-1 w-1 rounded-full bg-champagne' aria-hidden='true' />
+              {label}
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

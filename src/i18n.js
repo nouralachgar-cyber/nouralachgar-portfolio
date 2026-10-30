@@ -26,7 +26,8 @@ export const translations = {
       about: 'About',
       skills: 'Skills',
       projects: 'Projects',
-      contact: 'Contact'
+      contact: 'Contact',
+      settings: 'Settings'
     },
     hero: {
       eyebrow: 'Hello, I’m Noura',
@@ -42,6 +43,8 @@ export const translations = {
       name: 'Noura Lachgar',
       role: 'Web Developer & Designer',
       signal: 'Design × Code',
+      availability: 'Available for new projects',
+      location: 'Morocco',
       portraitAlt: 'Portrait of Noura Lachgar, web developer and designer',
       scroll: 'Scroll to explore'
     },
@@ -59,7 +62,17 @@ export const translations = {
         ux: 'UX focused'
       },
       signature: 'Noura Lachgar',
-      signatureRole: 'Web Developer'
+      signatureRole: 'Web Developer',
+      meta: {
+        basedInLabel: 'Based in',
+        basedIn: 'Morocco',
+        focusLabel: 'Focus',
+        focus: 'Frontend / Creative Development',
+        stackLabel: 'Stack',
+        stack: 'React / JavaScript / TypeScript',
+        approachLabel: 'Approach',
+        approach: 'Design + Development'
+      }
     },
     skills: {
       index: '02',
@@ -173,7 +186,8 @@ export const translations = {
       about: 'نبذة',
       skills: 'المهارات',
       projects: 'المشاريع',
-      contact: 'تواصل'
+      contact: 'تواصل',
+      settings: 'الإعدادات'
     },
     hero: {
       eyebrow: 'مرحباً، أنا نورة',
@@ -189,6 +203,8 @@ export const translations = {
       name: 'Noura Lachgar',
       role: 'مطوّرة ويب ومصمّمة',
       signal: 'تصميم × كود',
+      availability: 'متاحة لمشاريع جديدة',
+      location: 'المغرب',
       portraitAlt: 'صورة نورة لشقر، مطوّرة ويب ومصمّمة',
       scroll: 'مرّر للاستكشاف'
     },
@@ -206,7 +222,17 @@ export const translations = {
         ux: 'تركيز على تجربة المستخدم'
       },
       signature: 'نورة',
-      signatureRole: 'مطوّرة ويب'
+      signatureRole: 'مطوّرة ويب',
+      meta: {
+        basedInLabel: 'الموقع',
+        basedIn: 'المغرب',
+        focusLabel: 'التركيز',
+        focus: 'الواجهة الأمامية / التطوير الإبداعي',
+        stackLabel: 'المكدّس التقني',
+        stack: 'React / JavaScript / TypeScript',
+        approachLabel: 'المنهج',
+        approach: 'تصميم + تطوير'
+      }
     },
     skills: {
       index: '02',

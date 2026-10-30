@@ -10,39 +10,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        // New Futuristic Moroccan palette
+        // Futuristic Moroccan palette — fixed decorative tokens
         navy: {
           primary: '#07111F',
           secondary: '#0D1B2A',
-          deep: '#101B2D',
+          deep: '#0A1220',
+          subtle: '#0D1B2A',
         },
 
-        cyan: '#4CC9F0',
-        violet: '#8B5CF6',
-
-        ivory: '#F5EBDD',
-        champagne: '#D6A77A',
-        terracotta: '#C98262',
-        muted: '#8FA3B8',
-
-        // Derived/neutral extensions
-        'navy-deep': '#0a0e1a',
-        'surface-elevated': '#111e2e',
-
-        // Light mode
-        light: {
-          primary: '#F5EBDD',
-          secondary: '#E8D8C9',
-          deep: '#F0E0D0',
-        },
-
-        // Used by Navbar / components
-        'navy-subtle': '#0D1B2A',
-
-        // Extra aliases for the new UI
-        'navy-primary': '#07111F',
-        'navy-secondary': '#0D1B2A',
-        'surface-deep': '#101B2D',
+        // Theme-aware tokens (switch with light/dark via CSS variables)
+        cyan: 'rgb(var(--accent-cyan-rgb) / <alpha-value>)',
+        violet: 'rgb(var(--accent-violet-rgb) / <alpha-value>)',
+        champagne: 'rgb(var(--accent-champagne-rgb) / <alpha-value>)',
+        terracotta: 'rgb(var(--accent-terracotta-rgb) / <alpha-value>)',
+        ivory: 'rgb(var(--ivory-rgb) / <alpha-value>)',
+        ink: 'rgb(var(--ink-rgb) / <alpha-value>)',
+        muted: 'rgb(var(--muted-rgb) / <alpha-value>)',
+        paper: 'rgb(var(--paper-rgb) / <alpha-value>)',
       },
 
       fontFamily: {
@@ -68,6 +52,13 @@ export default {
           '"Noto Naskh Arabic"',
           'serif',
         ],
+
+        mono: [
+          '"SF Mono"',
+          'Menlo',
+          'Monaco',
+          'monospace',
+        ],
       },
 
       letterSpacing: {
@@ -86,10 +77,34 @@ export default {
       boxShadow: {
         soft: '0 30px 80px -50px rgba(7, 17, 31, 0.5)',
         lift: '0 22px 50px -30px rgba(13, 27, 42, 0.4)',
-        glass: '0 4px 20px rgba(0, 0, 0, 0.4)',
         cyan: '0 0 40px rgba(76, 201, 240, 0.15)',
         violet: '0 0 40px rgba(139, 94, 246, 0.15)',
-        terracotta: '0 0 30px rgba(201, 130, 98, 0.1)',
+      },
+
+      keyframes: {
+        'float-slow': {
+          '0%, 100%': { transform: 'translateY(-4px)' },
+          '50%': { transform: 'translateY(5px)' },
+        },
+        'drift-cyan': {
+          '0%, 100%': { transform: 'translate3d(0, 0, 0)' },
+          '50%': { transform: 'translate3d(24px, 18px, 0)' },
+        },
+        'drift-violet': {
+          '0%, 100%': { transform: 'translate3d(0, 0, 0)' },
+          '50%': { transform: 'translate3d(-18px, -22px, 0)' },
+        },
+        'marquee-x': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+      },
+
+      animation: {
+        'float-slow': 'float-slow 7s ease-in-out infinite',
+        'drift-cyan': 'drift-cyan 16s ease-in-out infinite',
+        'drift-violet': 'drift-violet 19s ease-in-out infinite',
+        'marquee-x': 'marquee-x 38s linear infinite',
       },
     },
   },
