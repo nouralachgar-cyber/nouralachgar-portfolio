@@ -25,11 +25,8 @@ function getInitialTheme() {
     return storedTheme;
   }
 
-  if (typeof window.matchMedia === 'function') {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-
-  return 'light';
+  // Dark navy is the signature experience; light mode stays one click away.
+  return 'dark';
 }
 
 function getInitialLang() {
@@ -101,6 +98,7 @@ export default function App() {
 
       <Navbar
         theme={theme}
+        lang={lang}
         toggleTheme={toggleTheme}
         toggleLang={toggleLang}
         t={t}

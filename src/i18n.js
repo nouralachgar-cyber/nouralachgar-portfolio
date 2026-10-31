@@ -27,15 +27,15 @@ export const translations = {
       skills: 'Skills',
       projects: 'Projects',
       contact: 'Contact',
-      settings: 'Settings'
+      settings: 'Settings',
+      cta: 'Let’s talk'
     },
     hero: {
       eyebrow: 'Hello, I’m Noura',
-      heading: 'Building digital experiences with purpose.',
+      heading: 'I build the web beyond the screen.',
       headingLines: [
-        [{ text: 'Building' }, { text: 'digital' }],
-        [{ text: 'experiences', italic: true }],
-        [{ text: 'with' }, { text: 'purpose.', accent: true }]
+        [{ text: 'I build' }, { text: 'the web', italic: true }],
+        [{ text: 'beyond' }, { text: 'the screen.', accent: true }]
       ],
       subtext: 'I create thoughtful, responsive web experiences by combining clean code, creative design, and attention to detail.',
       ctaPrimary: 'Explore my work',
@@ -104,6 +104,10 @@ export const translations = {
       subtext: 'A selection of projects where I explore design, functionality, and practical problem-solving.',
       github: 'GitHub',
       demo: 'Live demo',
+      featured: 'Featured project',
+      yearLabel: 'Year',
+      statusLabel: 'Status',
+      viewCase: 'Open project',
       viewGithub: 'View source on GitHub',
       viewDemo: 'View live demo',
       previewAlt: 'project preview',
@@ -187,15 +191,15 @@ export const translations = {
       skills: 'المهارات',
       projects: 'المشاريع',
       contact: 'تواصل',
-      settings: 'الإعدادات'
+      settings: 'الإعدادات',
+      cta: 'لنتحدث'
     },
     hero: {
       eyebrow: 'مرحباً، أنا نورة',
-      heading: 'بناء تجارب رقمية بإتقان وهدف.',
+      heading: 'أبني الويب بما يتجاوز الشاشة.',
       headingLines: [
-        [{ text: 'بناء تجارب' }],
-        [{ text: 'رقمية بإتقان' }],
-        [{ text: 'وهدف.', accent: true }]
+        [{ text: 'أبني الويب' }, { text: 'بما يتجاوز', italic: true }],
+        [{ text: 'الشاشة.', accent: true }]
       ],
       subtext: 'أصمم وأطور واجهات ويب متجاوبة تجمع بين الكود النظيف، التصميم الإبداعي، والاهتمام بأدق التفاصيل.',
       ctaPrimary: 'استكشف أعمالي',
@@ -264,6 +268,10 @@ export const translations = {
       subtext: 'مجموعة من المشاريع التي استكشفت فيها التصميم والأداء وحل المشكلات العملية.',
       github: 'GitHub',
       demo: 'عرض مباشر',
+      featured: 'مشروع مختار',
+      yearLabel: 'السنة',
+      statusLabel: 'الحالة',
+      viewCase: 'فتح المشروع',
       viewGithub: 'عرض المصدر على GitHub',
       viewDemo: 'زيارة العرض المباشر',
       previewAlt: 'معاينة المشروع',

@@ -27,12 +27,7 @@
       (function () {
         try {
           var storedTheme = localStorage.getItem('theme');
-          var theme =
-            storedTheme === 'light' || storedTheme === 'dark'
-              ? storedTheme
-              : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-                ? 'dark'
-                : 'light';
+          var theme = storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : 'dark';
 
           if (theme === 'dark') {
             document.documentElement.classList.add('dark');

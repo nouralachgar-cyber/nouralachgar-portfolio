@@ -3,6 +3,15 @@ import { Mail, Send, Sparkles } from 'lucide-react';
 
 const CONTACT_EMAIL = 'nlachgar12@gmail.com';
 const GITHUB_URL = 'https://github.com/nouralachgar-cyber';
+const LINKEDIN_URL = 'https://linkedin.com';
+
+function LinkedinIcon({ className }) {
+  return (
+    <svg className={className} viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'>
+      <path d='M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z' />
+    </svg>
+  );
+}
 
 export default function Contact({ t }) {
   const [values, setValues] = useState({ name: '', email: '', message: '' });
@@ -49,78 +58,71 @@ export default function Contact({ t }) {
     }
 
     const subject = encodeURIComponent(`${t.contact.mailSubject} ${trimmedName}`);
-    const body = encodeURIComponent(
-      `${trimmedMessage}\n\n— ${trimmedName}\n${trimmedEmail}`
-    );
+    const body = encodeURIComponent(`${trimmedMessage}\n\n— ${trimmedName}\n${trimmedEmail}`);
 
     window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
     setStatus('success');
   };
 
   const errorText = (field) =>
-    errors[field] && (
-      <p className='mt-1.5 text-[0.7rem] font-medium text-terracotta' role='alert'>
+    errors[field] ? (
+      <p className='contact-error' role='alert'>
         {errors[field]}
       </p>
-    );
+    ) : null;
 
   return (
-    <section
-      id='contact'
-      aria-labelledby='contact-title'
-      className='section-pad relative overflow-hidden'
-    >
-      {/* Dramatic closing atmosphere */}
-      <div
-        aria-hidden='true'
-        className='pointer-events-none absolute inset-0'
-        style={{
-          background:
-            'radial-gradient(ellipse 60% 50% at 80% 100%, var(--glow-violet), transparent 70%), radial-gradient(ellipse 55% 45% at 10% 90%, var(--glow-cyan), transparent 70%)',
-        }}
-      />
+    <section id='contact' aria-labelledby='contact-title' className='section section--deep'>
+      <span className='section-rule top-0' aria-hidden='true' />
 
       <div className='shell relative'>
-        <div className='grid grid-cols-1 gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16'>
-          {/* Left — headline + direct actions */}
-          <div>
-            <div className='flex items-center gap-4' data-reveal style={{ '--reveal-delay': '40ms' }}>
-              <span className='section-index' dir='ltr'>{t.contact.index}</span>
-              <span className='section-eyebrow'>{t.contact.eyebrow}</span>
-              <span className='hairline' aria-hidden='true' data-reveal='line' style={{ '--reveal-delay': '240ms' }} />
-            </div>
+        <div className='eyebrow-row' data-reveal style={{ '--reveal-delay': '40ms' }}>
+          <span className='section-index' aria-hidden='true' dir='ltr'>
+            {t.contact.index}
+          </span>
+          <span className='section-eyebrow'>{t.contact.eyebrow}</span>
+          <span
+            className='hairline'
+            data-reveal='line'
+            aria-hidden='true'
+            style={{ '--reveal-delay': '240ms' }}
+          />
+        </div>
 
-            <h2 id='contact-title' className='section-title mt-5' data-reveal='mask' style={{ '--reveal-delay': '100ms' }}>
+        <div className='contact-grid'>
+          {/* Closing statement */}
+          <div>
+            <h2
+              id='contact-title'
+              className='contact-headline mt-5'
+              data-reveal
+              style={{ '--reveal-delay': '100ms' }}
+            >
               {t.contact.heading}{' '}
               <em className='accent-italic'>{t.contact.headingAccent}</em>
             </h2>
 
-            <p
-              className='mt-16 font-editorial text-[clamp(1.35rem,2.6vw,1.9rem)] italic leading-snug text-ink/85'
-              data-reveal
-              style={{ '--reveal-delay': '200ms' }}
-            >
+            <p className='contact-signal' data-reveal style={{ '--reveal-delay': '160ms' }}>
               “{t.hero.signal}”
             </p>
 
-            <p className='body-copy mt-5 max-w-md' data-reveal style={{ '--reveal-delay': '260ms' }}>
-              {t.contact.direct}{' '}
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                aria-label={t.a11y.email}
-                className='font-semibold text-cyan underline decoration-cyan/30 underline-offset-4 transition-colors duration-300 hover:decoration-cyan/80'
-              >
-                {CONTACT_EMAIL}
-              </a>
+            <p className='contact-direct' data-reveal style={{ '--reveal-delay': '220ms' }}>
+              {t.contact.subtext}
             </p>
 
-            {/* Availability + socials */}
-            <div
-              className='mt-9 flex flex-wrap items-center gap-3'
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className='contact-mail'
+              aria-label={t.a11y.email}
               data-reveal
-              style={{ '--reveal-delay': '340ms' }}
+              style={{ '--reveal-delay': '280ms' }}
             >
-              <span className='inline-flex items-center gap-2.5 rounded-full border border-cyan/35 bg-cyan/[0.06] px-4 py-2 text-[0.63rem] font-bold uppercase tracking-[0.14em] text-cyan'>
+              <Mail className='h-4 w-4' strokeWidth={1.7} aria-hidden='true' />
+              <span dir='ltr'>{CONTACT_EMAIL}</span>
+            </a>
+
+            <div className='contact-pills' data-reveal style={{ '--reveal-delay': '340ms' }}>
+              <span className='contact-pill contact-pill--status'>
                 <span className='hero-eyebrow-dot' aria-hidden='true' />
                 {t.contact.availability}
               </span>
@@ -130,41 +132,36 @@ export default function Contact({ t }) {
                 target='_blank'
                 rel='noreferrer'
                 aria-label={t.a11y.viewGithub}
-                className='inline-flex items-center gap-2 rounded-full border border-ink/12 px-4 py-2 text-[0.63rem] font-bold uppercase tracking-[0.14em] text-muted transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan/50 hover:text-cyan dark:border-ivory/15'
+                className='contact-pill'
               >
                 GitHub
               </a>
 
               <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                aria-label={t.a11y.email}
-                className='inline-flex items-center gap-2 rounded-full border border-ink/12 px-4 py-2 text-[0.63rem] font-bold uppercase tracking-[0.14em] text-muted transition-all duration-300 hover:-translate-y-0.5 hover:border-violet/50 hover:text-violet dark:border-ivory/15'
+                href={LINKEDIN_URL}
+                target='_blank'
+                rel='noreferrer'
+                aria-label={t.a11y.viewLinkedin || t.contact.linkedinLabel}
+                className='contact-pill'
               >
-                <Mail className='h-3.5 w-3.5' strokeWidth={1.8} aria-hidden='true' />
-                {t.contact.emailLabel}
+                <LinkedinIcon className='h-3.5 w-3.5' />
+                LinkedIn
               </a>
             </div>
           </div>
 
-          {/* Right — form card */}
-          <div className='surface-card relative p-6 sm:p-8 lg:p-9' data-reveal style={{ '--reveal-delay': '220ms' }}>
-            <div className='mb-6 flex items-center justify-between gap-4'>
-              <h3 className='font-editorial text-[1.4rem] text-ink'>
-                {t.contact.formTitle}
-              </h3>
-              <Sparkles className='h-4 w-4 shrink-0 text-violet' strokeWidth={1.7} aria-hidden='true' />
+          {/* Conversation form */}
+          <div className='contact-card' data-reveal style={{ '--reveal-delay': '200ms' }}>
+            <div className='contact-card-head'>
+              <h3 className='contact-card-title'>{t.contact.formTitle}</h3>
+              <Sparkles className='h-4 w-4 shrink-0' strokeWidth={1.7} aria-hidden='true' />
             </div>
 
-            <p className='mb-7 text-[0.78rem] leading-relaxed text-muted'>
-              {t.contact.formNote}
-            </p>
+            <p className='contact-card-note'>{t.contact.formNote}</p>
 
-            <form onSubmit={handleSubmit} noValidate className='space-y-5'>
-              <div>
-                <label
-                  htmlFor='contact-name'
-                  className='mb-2 block text-[0.62rem] font-bold uppercase tracking-[0.16em] text-muted'
-                >
+            <form onSubmit={handleSubmit} noValidate>
+              <div className='contact-field'>
+                <label htmlFor='contact-name' className='contact-label'>
                   {t.contact.name}
                 </label>
                 <input
@@ -182,11 +179,8 @@ export default function Contact({ t }) {
                 {errorText('name')}
               </div>
 
-              <div>
-                <label
-                  htmlFor='contact-email'
-                  className='mb-2 block text-[0.62rem] font-bold uppercase tracking-[0.16em] text-muted'
-                >
+              <div className='contact-field'>
+                <label htmlFor='contact-email' className='contact-label'>
                   {t.contact.email}
                 </label>
                 <input
@@ -204,11 +198,8 @@ export default function Contact({ t }) {
                 {errorText('email')}
               </div>
 
-              <div>
-                <label
-                  htmlFor='contact-message'
-                  className='mb-2 block text-[0.62rem] font-bold uppercase tracking-[0.16em] text-muted'
-                >
+              <div className='contact-field'>
+                <label htmlFor='contact-message' className='contact-label'>
                   {t.contact.message}
                 </label>
                 <textarea
@@ -220,22 +211,22 @@ export default function Contact({ t }) {
                   onChange={handleChange('message')}
                   placeholder={t.contact.messagePlaceholder}
                   aria-invalid={Boolean(errors.message)}
-                  className='contact-input min-h-[120px] resize-y'
+                  className='contact-input contact-textarea'
                 />
                 {errorText('message')}
               </div>
 
-              <button type='submit' className='btn btn-primary mt-2 w-full'>
+              <button type='submit' className='contact-submit'>
                 <Send className='h-4 w-4' strokeWidth={1.8} aria-hidden='true' />
                 {status === 'success' ? t.contact.sending : t.contact.send}
               </button>
 
-              {status === 'success' && (
-                <p className='rounded-lg border border-cyan/30 bg-cyan/[0.07] px-4 py-3 text-[0.75rem] leading-relaxed text-cyan' role='status'>
+              {status === 'success' ? (
+                <p className='contact-success' role='status'>
                   {t.contact.success} {t.contact.successHint}{' '}
                   <span dir='ltr'>{CONTACT_EMAIL}</span>
                 </p>
-              )}
+              ) : null}
             </form>
           </div>
         </div>
