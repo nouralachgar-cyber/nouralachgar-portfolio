@@ -1,5 +1,5 @@
-import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import React, { useRef } from 'react';
+import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 import GithubMark from './GithubMark';
 
 const GITHUB_PROFILE = 'https://github.com/nouralachgar-cyber';
@@ -9,48 +9,46 @@ const PROJECTS = [
     id: 'matchmycv',
     title: 'MatchMyCV',
     category: 'AI & Automation',
-    year: '2025',
+    year: '2026',
     tags: ['React', 'Node.js', 'Express', 'MongoDB', 'Gemini API'],
-    image:
-      'https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=1600&q=80',
     github: 'https://github.com/nouralachgar-cyber/ai-cv-analyzer',
+    demo: '',
+    art: 'cyan',
     featured: true,
   },
   {
     id: 'edufanor',
     title: 'EduFanor',
     category: 'Education',
-    year: '2025',
+    year: '2026',
     tags: ['React', 'Tailwind CSS', 'Vite'],
-    image:
-      'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80',
-    github: '',
+    github: 'https://github.com/nouralachgar-cyber/EduFanor',
+    demo: 'https://edu-fanor.vercel.app',
+    art: 'blue',
   },
   {
     id: 'nebras',
     title: 'Nebras Coffee',
     category: 'Hospitality',
-    year: '2024',
+    year: '2026',
     tags: ['JavaScript', 'HTML5', 'CSS3'],
-    image:
-      'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1200&q=80',
     github: '',
+    demo: '',
+    art: 'champagne',
   },
   {
     id: 'bloom',
     title: 'BLOOM (Igeddigen)',
     category: 'E-commerce',
-    year: '2024',
+    year: '2026',
     tags: ['React', 'Tailwind CSS'],
-    image:
-      'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=1400&q=80',
-    github: '',
+    github: 'https://github.com/nouralachgar-cyber/harawkan-tulips',
+    demo: 'https://harawkan-tulips.vercel.app',
+    art: 'violet',
   },
 ];
 
 function ProjectCard({ project, index, t, featured = false }) {
-  const href = project.github || GITHUB_PROFILE;
-  const hasSource = Boolean(project.github);
   const description = t.projects.descriptions[project.id];
 
   return (
@@ -60,12 +58,11 @@ function ProjectCard({ project, index, t, featured = false }) {
       style={{ '--reveal-delay': 120 + index * 90 + 'ms' }}
     >
       <div className='project-media'>
-        <img
-          src={project.image}
-          alt={`${project.title} — ${t.projects.previewAlt}`}
-          loading={featured ? 'eager' : 'lazy'}
-          decoding='async'
-        />
+        <div className={`project-art project-art--${project.art}`} aria-hidden='true'>
+          <span className='project-art-grid' />
+          <span className='project-art-orbit' />
+          <span className='project-art-type'>{project.title}</span>
+        </div>
         <div className='project-overlay' aria-hidden='true' />
 
         <div className='project-media-top'>
@@ -103,29 +100,54 @@ function ProjectCard({ project, index, t, featured = false }) {
           ))}
         </div>
 
-        <div className='project-foot'>
-          <span className='project-cta'>
-            {hasSource ? t.projects.viewGithub : t.projects.viewCase}
-            <ArrowUpRight className='h-3.5 w-3.5' strokeWidth={1.8} aria-hidden='true' />
-          </span>
-          <span className='project-foot-rule' aria-hidden='true' />
-          <GithubMark className='project-gh h-4 w-4' aria-hidden='true' />
+        <div className='project-actions'>
+          {project.github ? (
+            <a
+              href={project.github}
+              target='_blank'
+              rel='noreferrer'
+              className='project-action project-action--github'
+              aria-label={`${project.title}: ${t.projects.viewGithub}`}
+            >
+              <GithubMark className='h-4 w-4' />
+              <span>{t.projects.github}</span>
+            </a>
+          ) : (
+            <span className='project-action project-action--unavailable' aria-disabled='true'>
+              {t.projects.github} — unavailable
+            </span>
+          )}
+          {project.demo ? (
+            <a
+              href={project.demo}
+              target='_blank'
+              rel='noreferrer'
+              className='project-action project-action--demo'
+              aria-label={`${project.title}: ${t.projects.viewDemo}`}
+            >
+              <ExternalLink className='h-4 w-4' strokeWidth={1.8} />
+              <span>{t.projects.demo}</span>
+            </a>
+          ) : (
+            <span className='project-action project-action--unavailable' aria-disabled='true'>
+              {t.projects.demo} — unavailable
+            </span>
+          )}
         </div>
       </div>
-
-      <a
-        href={href}
-        target='_blank'
-        rel='noreferrer'
-        aria-label={`${project.title} — ${hasSource ? t.projects.viewGithub : t.projects.viewCase}`}
-        className='project-stretch-link'
-      />
     </article>
   );
 }
 
 export default function Projects({ t }) {
-  const [featured, ...rest] = PROJECTS;
+  const trackRef = useRef(null);
+  const scrollTrack = (direction) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.querySelector('.project-card');
+    const distance = card ? card.getBoundingClientRect().width + 24 : 420;
+    track.scrollBy({ left: direction * distance, behavior: 'smooth' });
+  };
 
   return (
     <section id='projects' aria-labelledby='projects-title' className='section section--deep'>
@@ -188,32 +210,40 @@ export default function Projects({ t }) {
           </p>
         </div>
 
-        <div className='mt-10 lg:mt-12'>
-          <ProjectCard project={featured} index={0} t={t} featured />
-        </div>
-
-        <div
-          className='projects-grid projects-grid'
-          aria-label={t.projects.galleryLabel}
-        >
-          {rest.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index + 1} t={t} />
-          ))}
+        <div className='projects-track-wrap mt-10 lg:mt-12'>
+          <div
+            ref={trackRef}
+            className='projects-track'
+            aria-label={t.projects.galleryLabel}
+          >
+            {PROJECTS.map((project, index) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                index={index}
+                t={t}
+                featured={index === 0}
+              />
+            ))}
+          </div>
         </div>
 
         <div className='projects-foot' data-reveal style={{ '--reveal-delay': '160ms' }}>
           <p className='projects-count' dir='ltr'>
-            © 2024 — 2025 / 04
+            © 2026 / 04
           </p>
-          <a
-            href={GITHUB_PROFILE}
-            target='_blank'
-            rel='noreferrer'
-            className='projects-link'
-          >
-            {t.projects.more}
-            <GithubMark className='h-3.5 w-3.5' aria-hidden='true' />
-          </a>
+          <div className='projects-controls'>
+            <button type='button' className='icon-btn' onClick={() => scrollTrack(-1)} aria-label={t.projects.prev}>
+              <ArrowLeft className='h-4 w-4' aria-hidden='true' />
+            </button>
+            <button type='button' className='icon-btn' onClick={() => scrollTrack(1)} aria-label={t.projects.next}>
+              <ArrowRight className='h-4 w-4' aria-hidden='true' />
+            </button>
+            <a href={GITHUB_PROFILE} target='_blank' rel='noreferrer' className='projects-link'>
+              {t.projects.more}
+              <GithubMark className='h-3.5 w-3.5' aria-hidden='true' />
+            </a>
+          </div>
         </div>
       </div>
     </section>

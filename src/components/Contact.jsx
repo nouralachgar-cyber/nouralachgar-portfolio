@@ -3,7 +3,8 @@ import { Mail, Send, Sparkles } from 'lucide-react';
 
 const CONTACT_EMAIL = 'nlachgar12@gmail.com';
 const GITHUB_URL = 'https://github.com/nouralachgar-cyber';
-const LINKEDIN_URL = 'https://linkedin.com';
+// No verified LinkedIn profile URL is available in the existing project data.
+const LINKEDIN_URL = '';
 
 function LinkedinIcon({ className }) {
   return (
@@ -137,16 +138,23 @@ export default function Contact({ t }) {
                 GitHub
               </a>
 
-              <a
-                href={LINKEDIN_URL}
-                target='_blank'
-                rel='noreferrer'
-                aria-label={t.a11y.viewLinkedin || t.contact.linkedinLabel}
-                className='contact-pill'
-              >
-                <LinkedinIcon className='h-3.5 w-3.5' />
-                LinkedIn
-              </a>
+              {LINKEDIN_URL ? (
+                <a
+                  href={LINKEDIN_URL}
+                  target='_blank'
+                  rel='noreferrer'
+                  aria-label={t.a11y.viewLinkedin || t.contact.linkedinLabel}
+                  className='contact-pill'
+                >
+                  <LinkedinIcon className='h-3.5 w-3.5' />
+                  LinkedIn
+                </a>
+              ) : (
+                <span className='contact-pill' title='LinkedIn profile URL needs to be configured'>
+                  <LinkedinIcon className='h-3.5 w-3.5' />
+                  LinkedIn — add profile
+                </span>
+              )}
             </div>
           </div>
 

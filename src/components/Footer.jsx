@@ -3,7 +3,8 @@ import { ArrowUp, Mail } from 'lucide-react';
 import GithubMark from './GithubMark';
 
 const GITHUB_URL = 'https://github.com/nouralachgar-cyber';
-const LINKEDIN_URL = 'https://linkedin.com';
+// No verified LinkedIn profile URL is available in the existing project data.
+const LINKEDIN_URL = '';
 const CONTACT_EMAIL = 'nlachgar12@gmail.com';
 
 function LinkedinIcon({ className }) {
@@ -62,15 +63,25 @@ export default function Footer({ t }) {
             >
               <GithubMark className='h-4 w-4' />
             </a>
-            <a
-              href={LINKEDIN_URL}
-              target='_blank'
-              rel='noreferrer'
-              aria-label={t.a11y.viewLinkedin}
-              className='icon-btn'
-            >
-              <LinkedinIcon className='h-4 w-4' />
-            </a>
+            {LINKEDIN_URL ? (
+              <a
+                href={LINKEDIN_URL}
+                target='_blank'
+                rel='noreferrer'
+                aria-label={t.a11y.viewLinkedin}
+                className='icon-btn'
+              >
+                <LinkedinIcon className='h-4 w-4' />
+              </a>
+            ) : (
+              <span
+                className='icon-btn'
+                title='LinkedIn profile URL needs to be configured'
+                aria-label='LinkedIn — profile URL needs to be configured'
+              >
+                <LinkedinIcon className='h-4 w-4' />
+              </span>
+            )}
             <a
               href={`mailto:${CONTACT_EMAIL}`}
               aria-label={t.a11y.email}

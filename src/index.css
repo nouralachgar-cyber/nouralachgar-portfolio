@@ -2205,6 +2205,207 @@ html[dir='rtl'] .project-card:hover .project-cta svg {
 }
 
 /* =========================================================
+   PROJECT TRACK
+   ========================================================= */
+
+.projects-track-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.projects-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(78vw, 26rem);
+  gap: 1.25rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding: 0.2rem 0.2rem 1.1rem;
+  touch-action: pan-x;
+}
+
+.projects-track::-webkit-scrollbar {
+  display: none;
+}
+
+.projects-track .project-card {
+  width: 100%;
+  min-height: 34rem;
+  scroll-snap-align: start;
+}
+
+.projects-track .project-media {
+  aspect-ratio: 16 / 10;
+  min-height: 14.5rem;
+}
+
+.project-art {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 72% 26%, rgb(76 201 240 / 0.34), transparent 18%),
+    linear-gradient(145deg, #0d1b2a 0%, #12243a 58%, #07111f 100%);
+}
+
+.project-art--blue {
+  background:
+    radial-gradient(circle at 28% 68%, rgb(59 130 246 / 0.38), transparent 24%),
+    linear-gradient(135deg, #07111f, #12243a);
+}
+
+.project-art--champagne {
+  background:
+    radial-gradient(circle at 68% 32%, rgb(242 232 213 / 0.22), transparent 22%),
+    linear-gradient(145deg, #12243a, #07111f);
+}
+
+.project-art--violet {
+  background:
+    radial-gradient(circle at 30% 30%, rgb(139 92 246 / 0.22), transparent 24%),
+    linear-gradient(145deg, #0d1b2a, #07111f);
+}
+
+.project-art-grid {
+  position: absolute;
+  inset: -20%;
+  opacity: 0.32;
+  background-image:
+    linear-gradient(rgb(248 250 252 / 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(248 250 252 / 0.12) 1px, transparent 1px);
+  background-size: 32px 32px;
+  transform: perspective(500px) rotateX(58deg) rotateZ(-8deg) translateY(20%);
+  transform-origin: center;
+}
+
+.project-art-orbit {
+  position: absolute;
+  width: 9.5rem;
+  height: 9.5rem;
+  right: 12%;
+  top: 18%;
+  border: 1px solid rgb(76 201 240 / 0.56);
+  border-radius: 50%;
+  box-shadow:
+    0 0 40px rgb(76 201 240 / 0.12),
+    inset 0 0 30px rgb(76 201 240 / 0.08);
+}
+
+.project-art-orbit::before,
+.project-art-orbit::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgb(242 232 213 / 0.34);
+}
+
+.project-art-orbit::before {
+  inset: 1.2rem;
+}
+
+.project-art-orbit::after {
+  width: 0.55rem;
+  height: 0.55rem;
+  left: -0.28rem;
+  top: 48%;
+  border: 0;
+  background: #4cc9f0;
+  box-shadow: 0 0 18px rgb(76 201 240 / 0.8);
+}
+
+.project-art-type {
+  position: absolute;
+  left: 1.1rem;
+  bottom: 3.6rem;
+  max-width: 70%;
+  color: rgb(248 250 252 / 0.9);
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.project-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: auto;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--line);
+}
+
+.project-action {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 0.45rem;
+  color: rgb(var(--ink-rgb));
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: 0.28s var(--ease-silk);
+}
+
+.project-action--demo {
+  border-color: rgb(var(--accent-cyan-rgb) / 0.42);
+  background: rgb(var(--accent-cyan-rgb) / 0.08);
+  color: rgb(var(--accent-cyan-rgb));
+}
+
+.project-action:hover {
+  transform: translateY(-2px);
+  border-color: rgb(var(--accent-cyan-rgb) / 0.65);
+}
+
+.project-action--unavailable {
+  color: rgb(var(--muted-rgb));
+  opacity: 0.58;
+  cursor: not-allowed;
+}
+
+.projects-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 1024px) {
+  .projects-track {
+    grid-auto-columns: min(40vw, 31rem);
+  }
+
+  .projects-track .project-card--feature {
+    min-height: 36rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .projects-track {
+    grid-auto-columns: calc(100vw - 3.5rem);
+  }
+
+  .projects-track .project-card {
+    min-height: 32rem;
+  }
+
+  .project-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .project-action {
+    min-height: 2.9rem;
+  }
+}
+
+/* =========================================================
    15. CONTACT
    ========================================================= */
 
